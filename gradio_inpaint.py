@@ -8,10 +8,16 @@ import numpy as np
 import torch
 import random
 
+
 from pytorch_lightning import seed_everything
 from annotator.util import resize_image, HWC3
 from cldm.model import create_model, load_state_dict
 from cldm.ddim_hacked import DDIMSampler
+
+# debugging
+# import os
+
+# os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "caching_allocator"
 
 
 model_name = 'control_v11p_sd15_inpaint'
@@ -101,11 +107,11 @@ with block:
             input_image = gr.Image(source='upload', type="numpy", tool="sketch")
             prompt = gr.Textbox(label="Prompt")
             run_button = gr.Button(label="Run")
-            num_samples = gr.Slider(label="Images", minimum=1, maximum=12, value=1, step=1)
+            num_samples = gr.Slider(label="Images", minimum=1, maximum=1, value=1, step=1)
             seed = gr.Slider(label="Seed", minimum=-1, maximum=2147483647, step=1, value=12345)
             mask_blur = gr.Slider(label="Mask Blur", minimum=0.1, maximum=7.0, value=5.0, step=0.01)
             with gr.Accordion("Advanced options", open=False):
-                image_resolution = gr.Slider(label="Image Resolution", minimum=256, maximum=768, value=512, step=64)
+                image_resolution = gr.Slider(label="Image Resolution", minimum=32, maximum=32, value=32, step=16)
                 strength = gr.Slider(label="Control Strength", minimum=0.0, maximum=2.0, value=1.0, step=0.01)
                 guess_mode = gr.Checkbox(label='Guess Mode', value=False)
                 ddim_steps = gr.Slider(label="Steps", minimum=1, maximum=100, value=20, step=1)
